@@ -231,6 +231,7 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
 ################
 
 INSTALLED_APPS = (
+    "main", # the main app (old drum.links)
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -239,7 +240,6 @@ INSTALLED_APPS = (
     "django.contrib.sites",
     "django.contrib.sitemaps",
     "django.contrib.staticfiles",
-    "drum.links",
     "mezzanine.boot",
     "mezzanine.conf",
     "mezzanine.core",
@@ -312,8 +312,8 @@ OPTIONAL_APPS = (
 DEBUG_TOOLBAR_CONFIG = {"INTERCEPT_REDIRECTS": False}
 
 # Drum-specific Mezzanine settings
-AUTH_PROFILE_MODULE = "links.Profile"
-SITE_TITLE = "Drum"
+AUTH_PROFILE_MODULE = "main.Profile"
+SITE_TITLE = "EN"
 RATINGS_RANGE = (-1, 1)
 RATINGS_ACCOUNT_REQUIRED = True
 COMMENTS_ACCOUNT_REQUIRED = True
