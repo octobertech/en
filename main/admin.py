@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 from mezzanine.core.admin import DisplayableAdmin
-from drum.links.models import Link
+from main.models import Link
 
 
 class LinkAdmin(DisplayableAdmin):

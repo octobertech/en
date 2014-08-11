@@ -244,6 +244,7 @@ INSTALLED_APPS = (
     "mezzanine.conf",
     "mezzanine.core",
     "mezzanine.generic",
+    "mezzanine.pages",
     "mezzanine.accounts",
     #"mezzanine.blog",
     #"mezzanine.forms",
@@ -266,6 +267,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.request",
     "django.core.context_processors.tz",
     "mezzanine.conf.context_processors.settings",
+    "mezzanine.pages.context_processors.page",
 )
 
 # List of middleware classes to use. Order is important; in the request phase,
@@ -287,7 +289,7 @@ MIDDLEWARE_CLASSES = (
     "mezzanine.core.middleware.SitePermissionMiddleware",
     # Uncomment the following if using any of the SSL settings:
     # "mezzanine.core.middleware.SSLRedirectMiddleware",
-    # "mezzanine.pages.middleware.PageMiddleware",
+    "mezzanine.pages.middleware.PageMiddleware",
     "mezzanine.core.middleware.FetchFromCacheMiddleware",
 )
 
@@ -378,3 +380,6 @@ except ImportError:
     pass
 else:
     set_dynamic_settings(globals())
+
+
+#SEARCH_MODEL_CHOICES = 'main.Link'
