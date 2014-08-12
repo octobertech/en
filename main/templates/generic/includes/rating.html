@@ -5,11 +5,15 @@
     <form method="post" action="{% url "rating" %}">
         {% fields_for rating_form %}
     </form>
-
+	
+    {% if not rated or request.user.is_anonymous %}
     <span class="arrows">
-        <a href="#"><i class="icon icon-arrow-up"></i></a>
-        <a href="#"><i class="icon icon-arrow-down"></i></a>
+        <a href="#"><i class="glyphicon glyphicon-chevron-up"></i></a>
+		{% if request.user.profile.karma >= 10 %}
+        <a href="#"><i class="glyphicon glyphicon-chevron-down" style="margin-left: -1px"></i></a>
+		{% endif %}
     </span>
+    {% endif %}
 
     <span class="score">
         {% with rating_obj.comments_count|default:0 as comments_count %}

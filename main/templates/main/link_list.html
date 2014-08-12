@@ -12,10 +12,11 @@
     {% if not profile_user %}{% rating_for link %}{% endif %}
     <div class="link-detail{% if link.rating_sum < 0 %} link-negative{% endif %}">
         <h2>
-            <a href="{{ link.link }}">{{ link.title }}</a>
+            <a href="{% if link.link %}{{ link.link }}{% else %}{{ link.get_absolute_url }}{% endif %}" 
+			{% if link.link %}target="_blank"{% else %}{% endif %} >{{ link.title }}</a>
             <span class="domain">({{ link.domain }})</span>
         </h2>
-        by <a class="profile" href="{% url "profile" link.user.username %}">{{ link.user.profile }}</a>
+        by <a class="profile" href="{% url "profile" link.user.username %}" title="The number in bracket's is the user's karma. It increases when their links or comments are upvoted.">{{ link.user.profile }}</a>
         {{ link.publish_date|short_timesince }} ago |
         <a class="comments" href="{{ link.get_absolute_url }}">{{ link.comments_count }} comment{{ link.comments_count|pluralize }} </a>
     </div>

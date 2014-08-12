@@ -14,8 +14,8 @@ from mezzanine.conf import settings
 from mezzanine.generic.models import ThreadedComment
 from mezzanine.utils.views import paginate
 
-from main.models import Link
-from main.utils import order_by_score
+from .models import Link
+from .utils import order_by_score
 
 
 class UserFilterView(ListView):
@@ -39,8 +39,7 @@ class UserFilterView(ListView):
             qs = context["object_list"].filter(user=profile_user)
             context["object_list"] = qs
         context["profile_user"] = profile_user
-        context["no_data"] = ("Whoa, there's like, literally no data here, "
-                              "like seriously, I totally got nothin.")
+        context["no_data"] = ("Sorry, there is no data here.")
         return context
 
 
@@ -96,7 +95,30 @@ class LinkList(LinkView, ScoreOrderingView):
         if context["profile_user"]:
             return "Links by %s" % context["profile_user"].profile
         else:
-            return "Newest"
+            return "Latest"
+
+
+
+class ForumLinkView(object):
+    """
+    View for Links/Threads with the link field blank, used for Forum.
+    """
+    def get_queryset(self):
+        return Link.objects.published().filter(link='').select_related("user", "user__profile")
+
+
+
+class ForumLinkList(ForumLinkView, ScoreOrderingView):
+    """
+    View for Links/Threads with the link field blank, used for Forum.
+    """
+
+    date_field = "publish_date"
+    score_fields = ("rating_sum", "comments_count")
+
+    def get_title(self, context):
+        return "Forum"
+
 
 
 class LinkCreate(CreateView):
@@ -112,18 +134,19 @@ class LinkCreate(CreateView):
 
     def form_valid(self, form):
         hours = getattr(settings, "ALLOWED_DUPLICATE_LINK_HOURS", None)
-        if hours:
-            lookup = {
-                "link": form.instance.link,
-                "publish_date__gt": now() - timedelta(hours=hours),
-            }
-            try:
-                link = Link.objects.get(**lookup)
-            except Link.DoesNotExist:
-                pass
-            else:
-                error(self.request, "Link exists")
-                return redirect(link)
+        if form.instance.link:
+            if hours:
+                lookup = {
+                    "link": form.instance.link,
+                    "publish_date__gt": now() - timedelta(hours=hours),
+                }
+                try:
+                    link = Link.objects.get(**lookup)
+                except Link.DoesNotExist:
+                    pass
+                else:
+                    error(self.request, "Link exists")
+                    return redirect(link)
         form.instance.user = self.request.user
         form.instance.gen_description = False
         info(self.request, "Link created")

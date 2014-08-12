@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
 
-from .views import LinkList, LinkCreate, LinkDetail, CommentList
+from .views import LinkList, LinkCreate, LinkDetail, CommentList, ForumLinkList
 
 
 urlpatterns = patterns("",
@@ -19,10 +19,13 @@ urlpatterns = patterns("",
     url("^best/$",
         CommentList.as_view(),
         name="comment_list_best"),
+    url("^forum/$",
+        ForumLinkList.as_view(),
+        name="link_list_forum"),
     url("^link/create/$",
         login_required(LinkCreate.as_view()),
         name="link_create"),
-    url("^link/(?P<slug>.*)/$",
+    url("^link/(?P<pk>\d+)/$",
         LinkDetail.as_view(),
         name="link_detail"),
     url("^users/(?P<username>.*)/links/$",

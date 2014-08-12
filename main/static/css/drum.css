@@ -1,22 +1,6 @@
 
 /* Navbar fixes */
-.navbar-inner {border-radius:0 !important;}
-.navbar a {padding:10px 15px 0 15px !important;}
-.navbar a.btn {padding:3px 10px !important; margin:7px 3px;}
-.navbar-search .btn {display:none;}
-a.brand {
-    background:url('../img/drum-logo.png') no-repeat; background-position:5px 6px;
-    text-indent:13px; margin-left:-3px !important;
-    font-family: 'Risque', cursive;
-    font-size:28px !important;
-    padding:3px 20px !important;
-    text-decoration:none;
-    color:#fff !important;
-}
-@media (max-width: 600px) {
-    a.brand {text-indent:40px; padding:0 !important; width:30px; overflow:hidden;
-}}
-
+.main {margin-top: 30px;}
 /* Misc */
 .btn-profile {margin-top:20px;}
 .bio {margin:20px 0;}
@@ -27,9 +11,8 @@ a.brand {
 body {color:#666;}
 
 /* Headings */
-h1 {margin:0;}
-h1, h2 {font-size:24px;}
-h2 a:visited {color:rgb(156,188,156);}
+h1 {margin:0; font-size:25px; }
+h2 {font-size:20px;}
 .domain {font-weight:normal; font-size:14px; color:#999;}
 
 /* Redundant Mezzanine bits */
@@ -38,50 +21,54 @@ fieldset {margin-top:20px;}
 footer {background: none;}
 
 /* Big horizontal grey line everywhere */
-h1, .link-item, .comment-item, .comment-links, #comments h3 {
+.link-item, .comment-item, .comment-links, #comments h3 {
     border:0 solid rgba(0,0,0,.02);
 }
-h1, .link-item, .comment-item, .comment-links {border-bottom-width:5px;}
+.link-item, .comment-item, .comment-links {border-bottom-width:5px;}
 #comments h3 {border-top-width:5px;}
 
 /* Rating widget with up/down arrows */
-.rating {float:left; margin-top:-15px;}
+.rating {float:left; margin: 20px;}
 .rating form {display:none !important;}
 .rating i {
     display:block !important;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
+    -webkit-border-radius: 1px;
+    -moz-border-radius: 1px;
+    border-radius: 1px;
 }
 .arrows {float:left; margin-top:-5px;}
 .score, .arrows {opacity:.6;}
-.arrows a:hover i {background-color:#1abc9c; background-image:url("../img/glyphicons-halflings-white.png");}
+.arrows a:hover i {background-color:#1abc9c;}
 
 /* Link items in a list */
 .link-item h2 {line-height:30px; margin:0;}
 .link-item .rating, .link-detail {float:left;}
 .link-item .rating {
     background-color: #efefef;
-    padding: 10px;
-    margin: 0 20px 0 0;
+    padding: 5px;
+    margin-top: 5px;
+	margin-bottom: 0px;
+	margin-right: 12px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    width:75px;
+    width: 55px;
     text-align:center;
 }
 .link-item .arrows {
-    margin: 0 10px 0 0;
+    margin: 0;
     background-color: #fff;
-    padding: 7px;
+    padding: 5px;
     display: block;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
 }
 .link-item .score {
-  font-size: 30px;
-  line-height: 40px
+  font-size: 20px;
+  line-height: 30px;
+  padding-top: 10px;
+  margin-top: 10px;
 }
 
 .link-detail {width:80%;}

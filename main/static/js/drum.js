@@ -17,7 +17,7 @@ var setRatingClick = function() {
     $('.arrows a').click(function() {
 
         var arrow = $(this);
-        var index = arrow.find('i').hasClass('icon-arrow-up') ? 1 : 0;
+        var index = arrow.find('i').hasClass('glyphicon-chevron-up') ? 1 : 0;
         var container = arrow.parent().parent();
         var form = container.find('form');
 

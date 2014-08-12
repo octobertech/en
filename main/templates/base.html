@@ -1,72 +1,83 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
-{% load mezzanine_tags i18n future staticfiles %}
+{% load pages_tags mezzanine_tags i18n future staticfiles %}
 <head>
 
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
 <meta name="description" content="{% block meta_description %}{% endblock %}">
 <title>{% block meta_title %}{% endblock %}{% if settings.SITE_TITLE %} | {{ settings.SITE_TITLE }}{% endif %}</title>
 <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico">
 
-<style>
-@import url("http://fonts.googleapis.com/css?family=Lato:400,700,900,400italic");
-@import url(http://fonts.googleapis.com/css?family=Risque);
-</style>
+<style></style>
 {% compress css %}
-<link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap2.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-theme.css">
 <link rel="stylesheet" href="{{ STATIC_URL }}css/mezzanine1.css">
-<link rel="stylesheet" href="{{ STATIC_URL }}css/flat-ui.css">
-<link rel="stylesheet" href="{{ STATIC_URL }}css/drum.css">
 <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap2-responsive.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}css/drum.css">
 {% endcompress %}
 
 {% compress js %}
 <script src="{{ STATIC_URL }}mezzanine/js/{{ settings.JQUERY_FILENAME }}"></script>
-<script src="{{ STATIC_URL }}js/bootstrap2.js"></script>
+<script src="{{ STATIC_URL }}js/bootstrap.js"></script>
 <script src="{{ STATIC_URL }}js/bootstrap2-extras.js"></script>
 <script src="{{ STATIC_URL }}js/drum.js"></script>
 <script src="{{ STATIC_URL }}js/jquery.pjax.js"></script>
+
 {% endcompress %}
 
 {% block extra_head %}{% endblock %}
-
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "7c2a6411-ada3-423c-a44f-30fc87595581", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
 </head>
 <body>
 
-<div class="navbar navbar-inverse">
-<div class="navbar-inner navbar-fixed-top">
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 <div class="container">
-    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+<div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">{% trans "Toggle Navigation" %}</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
-    </a>
+    </button>
 
-    {% if settings.SITE_TITLE %}<a class="brand" href="/">{{ settings.SITE_TITLE }}</a>{% endif %}
-    <ul class="nav">
-        <li class="divider-vertical"></li>
+    {% if settings.SITE_TITLE %}<a class="navbar-brand" href="/">{{ settings.SITE_TITLE }}</a>{% endif %}
+    </div>
+	<div class="navbar-collapse collapse" id="navbar-collapse">
+	
+	<ul class="nav navbar-nav" role="navigation">
         {% url "link_list_latest" as link_list_latest %}
         {% url "comment_list_latest" as comment_list_latest %}
         {% url "comment_list_best" as comment_list_best %}
-        <li{% if request.path == link_list_latest %} class="active"{% endif %}><a href="{{ link_list_latest }}">Newest</a></li>
-        <li{% if request.path == comment_list_latest %} class="active"{% endif %}><a href="{{ comment_list_latest }}">Comments</a></li>
-        <li{% if request.path == comment_list_best %} class="active"{% endif %}><a href="{{ comment_list_best }}">Best</a></li>
+        {% url "home" as home %}
+        {% url "link_list_forum" as link_list_forum %}
+		<li{% if request.path == home %} class="active"{% endif %}><a href="{{ home }}">Home</a></li>
+        <li{% if request.path == link_list_latest %} class="active"{% endif %}><a href="{{ link_list_latest }}">Latest</a></li>
+        <li{% if request.path == link_list_forum %} class="active"{% endif %}><a href="{{ link_list_forum }}">Forum</a></li>
+		<li class="{% if request.path == comment_list_latest %}active{% endif %} dropdown"><a href="{{ comment_list_latest }}" 
+		class="dropdown-toggle disabled" data-toggle="dropdown">Comments <b class="caret"></b></a>
+		    <ul class="dropdown-menu" data-no-collapse="true">
+                <li{% if request.path == comment_list_best %} class="active"{% endif %}><a href="{{ comment_list_best }}">Best</a></li>
+		    </ul>
+		</li>
     </ul>
-    <div class="nav-collapse">
-        <div class="pull-right">
-            <a class="btn btn-small btn-warning no-pjax" href="{% url "link_create" %}">New Link</a>
-        </div>
-        <ul class="nav pull-right"><li class="divider-vertical"></li></ul>
-        {% search_form "main.Link" %}
-        {% nevercache %}
-        {% include "accounts/includes/user_panel_nav.html" %}
-        {% endnevercache %}
+    
+    <ul class="nav navbar-nav navbar-right">
+	<li><form action="{% url "link_create" %}">
+	{% csrf_token %}
+	<button class="btn btn-default no-pjax" type="submit">New Link/Thread</button></form></li>
+	
+	{% nevercache %}
+    {% include "accounts/includes/user_panel_nav.html" %}
+    {% endnevercache %}
+    </ul>
+		
     </div>
 </div>
-</div>
-</div>
+</nav>
 
 <div class="container main">
 {% nevercache %}
@@ -77,25 +88,86 @@
 {% endfor %}
 {% endnevercache %}
 <h1>{% block title %}{% endblock %}</h1>
+{% url "home" as home %}
+{% if request.path == home %}
+<h1>Crowdsourcing news and info platform for Ebola Virus Decease outbreak. <p style="font-size: 18px;"><a href="/about">Learn more</a></p></h1><br>
+{% endif %}
 </div>
 
-<div class="container main">
+<div class="container">
 <div class="row">
-<div class="span12 middle">
+<div class="col-md-9">
     {% block main %}{% endblock %}
+</div>
+<div class="col-md-3">
+<h4>Dear user, you can become a proud supporter and contributor to Ebola News platform and help people from the entire world 
+to be informed, discuss and find a solution to EVD through engaging via platform, sharing and donating via buttons bellow. Thank you!</h4>
+<br>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_donations">
+<input type="hidden" name="business" value="info@octobertech.org">
+<input type="hidden" name="lc" value="US">
+<input type="hidden" name="item_name" value="OctoberTech.org - 'Ebola News' and other projects.">
+<input type="hidden" name="no_note" value="0">
+<input type="hidden" name="currency_code" value="USD">
+<input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form><br>
+<h4>Donate via Bitcoin:<br></h4>
+<p style="font-size: 12px;">131EBtEBkgmc5nkbE7ddeHjiJo9HTyKw9N</p>
+<br>
+<span class='st_facebook_large' displayText='Facebook'></span>
+<span class='st_twitter_large' displayText='Tweet'></span>
+<span class='st_googleplus_large' displayText='Google +'></span>
+<span class='st_linkedin_large' displayText='LinkedIn'></span>
+<span class='st__large' displayText=''></span>
+    {% block sidebar %}{% endblock %}
 </div>
 </div>
 </div>
 
 <footer>
 <div class="container">
-    <p>
-        Made by <a href="http://twitter.com/stephen_mcd">Stephen McDonald</a>
-        <span class="separator">|</span>
-        <a href="https://github.com/stephenmcd/drum">Open Source</a>
-        <span class="separator">|</span>
-        {% trans "Powered by" %} <a href="http://mezzanine.jupo.org">Mezzanine</a>
-    </p>
+<div class="row">
+<div class="col-md-6">
+{% page_menu "pages/menus/footer.html" %}
+</div>
+<div class="col-md-6">
+{% search_form "main.Link" %}
+</div>
+</div>
+<div class="row">
+<div class="col-md-12">
+<p class="site-info text-center" style="font-size: 18px; margin: 8px;">
+    {% trans "Made by" %}
+	<a href="http://OctoberTech.org" target="_blank">OctoberTech.org</a>
+</p>
+</div>
+</div>
+<div class="row">
+<div class="col-md-12">
+<p class="site-info text-center" style="font-size: 15px; margin: 5px;">
+    {% trans "Powered by" %}
+	<a href="http://drum.jupo.org" target="_blank">Drum</a>,
+    <a href="http://mezzanine.jupo.org" target="_blank">Mezzanine</a>,
+    <a href="http://www.djangoproject.com" target="_blank">Django</a>
+    <span class="separator">|</span>
+    {% trans "Theme by" %} <a target="_blank" href="http://getbootstrap.com">Bootstrap</a>
+    <span class="separator">|</span>
+    {% trans "Hosting by" %}
+    <a target="_blank" href="http://mandrillapp.com/track/click.php?u=30039865&id=ada2e2d6b504463d89f539bbbf54c3fc&url=http%3A%2F%2Fe.customeriomail.com%2Fe%2Fc%2FeyJlbWFpbF9pZCI6Ik1UWXpOVE02Rm9DakFtUUFBbk1BRnA3NUdnRkhuRHp2cVJVNEdGUG9YcFFCY3pvNU1qVTNNUUE9IiwicG9zaXRpb24iOjEsImhyZWYiOiJodHRwOi8vd3d3LmRpZ2l0YWxvY2Vhbi5jb20vP3JlZmNvZGU9MTcyOGNjOTg5MzQ1In0%3D&url_id=27c2b6455db1aa7c5405e2e291389ea5fbe1579b">Digital Ocean</a> 
+</p>
+</div>
+</div>
+<div class="row">
+<div class="col-md-12">
+<p class="site-info text-center" style="font-size: 15px; margin: 5px;">
+    {% trans "Open-sourced on" %}
+	<a href="http://github.com/octobertech/en" target="_blank">Github</a>
+</p>
+</div>
+</div>
 </div>
 </footer>
 
