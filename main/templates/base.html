@@ -68,7 +68,7 @@
     <ul class="nav navbar-nav navbar-right">
 	<li><form action="{% url "link_create" %}">
 	{% csrf_token %}
-	<button class="btn btn-default no-pjax" type="submit">New Link/Thread</button></form></li>
+	<button class="btn btn-default no-pjax">New Link/Thread</button></form></li>
 	
 	{% nevercache %}
     {% include "accounts/includes/user_panel_nav.html" %}
