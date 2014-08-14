@@ -293,7 +293,7 @@ def backup(filename):
     """
     Backs up the database.
     """
-    return postgres("pg_dump -Fc %s > %s" % (env.proj_name, filename))
+    return postgres("pg_dump -Fc %s > %s" % (env.db_name, filename))
 
 
 @task
@@ -301,7 +301,7 @@ def restore(filename):
     """
     Restores the database.
     """
-    return postgres("pg_restore -c -d %s %s" % (env.proj_name, filename))
+    return postgres("pg_restore -c -d %s %s" % (env.db_name, filename))
 
 
 @task
