@@ -381,14 +381,14 @@ def create():
 
     # Create DB and DB user.
     pw = db_pass()
-    user_sql_args = ("postgres", pw.replace("'", "\'"))
+    user_sql_args = (env.proj_name, pw.replace("'", "\'"))
     user_sql = "CREATE USER %s WITH ENCRYPTED PASSWORD '%s';" % user_sql_args
     psql(user_sql, show=False)
     shadowed = "*" * len(pw)
     print_command(user_sql.replace("'%s'" % pw, "'%s'" % shadowed))
     psql("CREATE DATABASE %s WITH OWNER %s ENCODING = 'UTF8' "
          "LC_CTYPE = '%s' LC_COLLATE = '%s' TEMPLATE template0;" %
-         ("postgres", "postgres", env.locale, env.locale))
+         (env.proj_name, env.proj_name, env.locale, env.locale))
 
     # Set up SSL certificate.
     if not env.ssl_disabled:
